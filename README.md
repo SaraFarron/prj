@@ -46,3 +46,7 @@ run project through prj, feel free to adjust them individually to your needs.
 # TODO
 
 * init command: initialise project (git init, create README, create main.lang, etc.) and allow to choose initilising profile
+
+# Credits
+
+Thanks to [EivindArvesen's prm](https://github.com/EivindArvesen/prm) - some ideas were inspired by his project
