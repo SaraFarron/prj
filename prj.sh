@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PROJECTS_FOLDER="$HOME/Projects/"  # your projects folder
+EDITOR_COMMAND="code ."  # edit to run in your favourite editor
 
 function help() {
     echo ""
@@ -18,13 +19,17 @@ function add() {
     # add a project
     cd "$PROJECTS_FOLDER" || exit
     
-    if [[ $1 == http* ]] ; then  # starts with http
+    if [[ $1 == http* ]] ; then
+        
+        # creates project from git link
         git clone "$1"
         PROJECT="${1##*/}"  # split by / and take 5th
         PROJECT=$(echo "$PROJECT"| cut -d'.' -f 1)  # remove .git
         echo "Creating project $PROJECT..."
         GIT="git pull $1"
     else
+        
+        # creates empty project without git
         PROJECT=$1
         GIT=""
         echo "Creating project $PROJECT..."
@@ -35,16 +40,21 @@ function add() {
     
     PROJECTPATH="$MANAGER_PATH/projects/$PROJECT.sh"
     touch "$PROJECTPATH"
+    
+    # here you can edit default project script
     cat >> "$PROJECTPATH" <<- EOM
 #!/bin/bash
 
 cd $PROJECTS_FOLDER/$PROJECT || exit
 $GIT
-code .
+$EDITOR_COMMAND
 EOM
     chmod +x "$PROJECTPATH"
+    
+    echo "Project $PROJECT created"
+    # opens project after creation
     cd "$PROJECTS_FOLDER/$PROJECT" || exit
-    code .
+    $EDITOR_COMMAND
 }
 
 function list() {
@@ -59,6 +69,15 @@ function list() {
 function remove() {
     # remove a project
     rm "$MANAGER_PATH/projects/$2.sh"
+    while true; do
+        read -p "Do you also want to remove $PROJECTS_FOLDER/$2? " yn
+        case $yn in
+            [Yy]* ) rm -rf "${PROJECTS_FOLDER:?}/$2"; break;;
+            [Nn]* ) exit;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
+
 }
 
 function run() {
