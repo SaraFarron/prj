@@ -6,12 +6,13 @@ EDITOR_COMMAND="code ."  # edit to run in your favourite editor
 function help() {
     echo ""
     echo "Usage:"
-    echo "  prj add <project name>       Add project."
-    echo "  prj add <git link>           Add project from git host."
-    echo "  prj list                     List all projects."
-    echo "  prj remove <project name>    Remove project(s)."
-    echo "  prj run <project name>       Start project."
-    echo "  prj -h --help                Display this information."
+    echo "  prj add <project name>           Add project."
+    echo "  prj add <git link>               Add project from git host."
+    echo "  prj list                         List all projects."
+    echo "  prj remove <project name>        Remove project(s)."
+    echo "  prj run <project name>           Start project."
+    echo "  prj init <project name> <config> Init project."
+    echo "  prj -h --help                    Display this information."
     echo ""
 }
 
@@ -24,7 +25,7 @@ function add() {
         # creates project from git link
         PROJECT="${1##*/}"  # split by / and take last
         PROJECT=$(echo "$PROJECT"| cut -d'.' -f 1)  # remove .git
-        if [ -f "$MANAGER_PATH/projects/$PROJECT.sh" ]; then
+        if [ -f "$SCRIPTS/$PROJECT.sh" ]; then
             echo "$PROJECT already exists"
             exit
         fi
@@ -35,7 +36,7 @@ function add() {
         
         # creates empty project without git
         PROJECT=$1
-        if [ -f "$MANAGER_PATH/projects/$PROJECT.sh" ]; then
+        if [ -f "$SCRIPTS/$PROJECT.sh" ]; then
             echo "$PROJECT already exists"
             exit
         fi
@@ -47,7 +48,7 @@ function add() {
     cd "$MANAGER_PATH" || exit
     
     echo "Creating project config..."
-    PROJECTPATH="$MANAGER_PATH/projects/$PROJECT.sh"
+    PROJECTPATH="$SCRIPTS/$PROJECT.sh"
     touch "$PROJECTPATH"
     
     # here you can edit default project script
@@ -68,7 +69,7 @@ EOM
 
 function list() {
     # list all projects
-    cd "$MANAGER_PATH/projects" || exit
+    cd "$SCRIPTS" || exit
     for f in *.sh; do
         printf '%s\n' "${f%.sh}"
     done
@@ -77,11 +78,11 @@ function list() {
 
 function remove() {
     # remove a project
-    if [ ! -f "$MANAGER_PATH/projects/$1.sh" ]; then
+    if [ ! -f "$SCRIPTS/$1.sh" ]; then
         echo "Project does not exist"
         exit
     fi
-    rm "$MANAGER_PATH/projects/$1.sh"
+    rm "$SCRIPTS/$1.sh"
     while true; do
         read -p "Do you also want to remove $PROJECTS_FOLDER/$1? " yn
         case $yn in
@@ -94,10 +95,23 @@ function remove() {
 }
 
 function run() {
-    cd "$MANAGER_PATH/projects/" || exit
+    cd "$SCRIPTS" || exit
     "./$1.sh"
 }
 
+function init() {
+    cd "$PROJECTS_FOLDER/$1" || exit
+    for config in "${@:2}"
+    do
+        if [ ! -f "$CONFIGS/$config.sh" ]; then
+            echo "There is no $config config"
+            continue
+        fi
+        echo "Executing $config..."
+        /bin/bash "$CONFIGS/$config.sh"
+    done
+    
+}
 
 
 function main() {
@@ -130,6 +144,14 @@ function main() {
             help
         fi
         ;;
+        init)
+        if [ "$3" ]; then
+            init "${@:2}"
+        else
+            echo "usage:"
+            help
+        fi
+        ;;
         help)
         help
         ;;
@@ -141,5 +163,7 @@ function main() {
 }
 
 MANAGER_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+SCRIPTS="$MANAGER_PATH/projects"
+CONFIGS="$MANAGER_PATH/configs"
 
 main "$@"

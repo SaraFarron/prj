@@ -15,19 +15,24 @@ alias prj="path/to/prj/prj.sh"
 # Usage
 
 ```shell
-$ prj
-
-Usage:
-  prj add <project name>       Add project.
-  prj add <git link>           Add project from git host.
-  prj list                     List all projects.
-  prj remove <project name>    Remove project(s).
-  prj run <project name>       Start project.
-  prj -h --help                Display this information.
+prj add <project name>           Add project.
+prj add <git link>               Add project from git host.
+prj list                         List all projects.
+prj remove <project name>        Remove project(s).
+prj run <project name>           Start project.
+prj init <project name> <config> Init project.
+prj                              Display this information.
 
 ```
+* Add project: 
+If provided with name creates folder in `PROJECTS_FOLDER` with that name and adds project config
+If provided with link clones repo in `PROJECTS_FOLDER` and adds project config
+* Init project:
+You can initialise project like `git init ; touch README.md ; touch .gitignore ...`
+Possible init options are in `configs/`, of course, you can add and edit them to your taste
+You can also init multilple scripts in one go: `prj init project-name config1 config2 config3`
 
-You can define what editor to use and your default projects folder in `prh.sh` at the top
+You can define what editor to use and your default projects folder in `prj.sh` at the top
 of the file:
 ```shell
 PROJECTS_FOLDER="$HOME/Projects/"  # your projects folder
