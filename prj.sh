@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECTS_FOLDER="$HOME/Projects/"  # your projects folder
+PROJECTS_FOLDER="$HOME/Projects"  # your projects folder
 EDITOR_COMMAND="code ."  # edit to run in your favourite editor
 
 function help() {
@@ -77,11 +77,15 @@ function list() {
 
 function remove() {
     # remove a project
-    rm "$MANAGER_PATH/projects/$2.sh"
+    if [ ! -f "$MANAGER_PATH/projects/$1.sh" ]; then
+        echo "Project does not exist"
+        exit
+    fi
+    rm "$MANAGER_PATH/projects/$1.sh"
     while true; do
-        read -p "Do you also want to remove $PROJECTS_FOLDER/$2? " yn
+        read -p "Do you also want to remove $PROJECTS_FOLDER/$1? " yn
         case $yn in
-            [Yy]* ) rm -rf "${PROJECTS_FOLDER:?}/$2"; break;;
+            [Yy]* ) rm -rf "${PROJECTS_FOLDER:?}/$1"; break;;
             [Nn]* ) exit;;
             * ) echo "Please answer yes or no.";;
         esac
@@ -93,6 +97,8 @@ function run() {
     cd "$MANAGER_PATH/projects/" || exit
     "./$1.sh"
 }
+
+
 
 function main() {
     # main function
