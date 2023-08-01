@@ -22,10 +22,10 @@ function add() {
     if [[ $1 == http* ]] ; then
         
         # creates project from git link
-        git clone "$1"
         PROJECT="${1##*/}"  # split by / and take 5th
         PROJECT=$(echo "$PROJECT"| cut -d'.' -f 1)  # remove .git
         echo "Creating project $PROJECT..."
+        git clone "$1"
         GIT="git pull $1"
     else
         
@@ -33,11 +33,12 @@ function add() {
         PROJECT=$1
         GIT=""
         echo "Creating project $PROJECT..."
-        mkdir "$PROJECT" || echo "Error occured, mb directory $PROJECT already exists?"
+        mkdir "$PROJECT" || echo "Directory $PROJECT already exists"
     fi
     
     cd "$MANAGER_PATH" || exit
     
+    echo "Creating project config..."
     PROJECTPATH="$MANAGER_PATH/projects/$PROJECT.sh"
     touch "$PROJECTPATH"
     
