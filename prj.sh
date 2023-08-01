@@ -22,8 +22,12 @@ function add() {
     if [[ $1 == http* ]] ; then
         
         # creates project from git link
-        PROJECT="${1##*/}"  # split by / and take 5th
+        PROJECT="${1##*/}"  # split by / and take last
         PROJECT=$(echo "$PROJECT"| cut -d'.' -f 1)  # remove .git
+        if [ -f "$MANAGER_PATH/projects/$PROJECT.sh" ]; then
+            echo "$PROJECT already exists"
+            exit
+        fi
         echo "Creating project $PROJECT..."
         git clone "$1"
         GIT="git pull $1"
@@ -31,6 +35,10 @@ function add() {
         
         # creates empty project without git
         PROJECT=$1
+        if [ -f "$MANAGER_PATH/projects/$PROJECT.sh" ]; then
+            echo "$PROJECT already exists"
+            exit
+        fi
         GIT=""
         echo "Creating project $PROJECT..."
         mkdir "$PROJECT" || echo "Directory $PROJECT already exists"
@@ -82,8 +90,8 @@ function remove() {
 }
 
 function run() {
-    cd "$MANAGER_PATH" || exit
-    "./$2.sh"
+    cd "$MANAGER_PATH/projects/" || exit
+    "./$1.sh"
 }
 
 function main() {
