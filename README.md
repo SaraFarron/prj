@@ -6,11 +6,11 @@ Simple terminal project manager to make your life a little bit easier
 git clone https://github.com/SaraFarron/prj.git
 chmod +x ./prj/prj.sh
 ```
-Add alias to your `.bashrc`:
+Add alias and source to your `.bashrc`:
 ```shell
 alias prj="path/to/prj/prj.sh"
+source path/to/prj/prj-completion.sh
 ```
-
 # Usage
 ```shell
 prj add <project name>           Add project.

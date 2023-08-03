@@ -31,7 +31,7 @@ function add() {
         fi
         echo "Creating project $PROJECT..."
         git clone "$1"
-        GIT="git pull $1"
+        GIT="git fetch $1"
     else
         
         # creates empty project without git
