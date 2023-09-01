@@ -95,6 +95,10 @@ function remove() {
 }
 
 function run() {
+    if [ ! -f "$SCRIPTS/$1.sh" ]; then
+        echo "Project does not exist"
+        exit
+    fi
     cd "$SCRIPTS" || exit
     "./$1.sh"
 }
@@ -121,7 +125,6 @@ function main() {
         if [ "$2" ]; then
             add "$2"
         else
-            echo "usage:"
             help
         fi
         ;;
@@ -132,7 +135,6 @@ function main() {
         if [ "$2" ]; then
             remove "$2"
         else
-            echo "usage:"
             help
         fi
         ;;
@@ -140,7 +142,6 @@ function main() {
         if [ "$2" ]; then
             run "$2"
         else
-            echo "usage:"
             help
         fi
         ;;
@@ -148,7 +149,6 @@ function main() {
         if [ "$3" ]; then
             init "${@:2}"
         else
-            echo "usage:"
             help
         fi
         ;;
