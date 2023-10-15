@@ -69,7 +69,7 @@ server {
 }
 EOM
 
-wget http://94.103.83.67/init-letsencrypt.sh
+url -L https://raw.githubusercontent.com/wmnnd/nginx-certbot/master/init-letsencrypt.sh > init-letsencrypt.sh
 chmod +x init-letsencrypt.sh
 
 echo 'Do not forget to replace example.org in nginx.conf'
