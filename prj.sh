@@ -99,7 +99,6 @@ function run() {
         echo "Project does not exist"
         exit
     fi
-    echo "here lol"
     cd "$SCRIPTS" || exit
     "./$1.sh"
 }
