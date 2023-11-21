@@ -99,6 +99,7 @@ function run() {
         echo "Project does not exist"
         exit
     fi
+    echo "here lol"
     cd "$SCRIPTS" || exit
     "./$1.sh"
 }
@@ -121,43 +122,43 @@ function init() {
 function main() {
     # main function
     case "$1" in
-        add)
+    add)
         if [ "$2" ]; then
             add "$2"
         else
             help
         fi
-        ;;
-        list)
+    ;;
+    list)
         list
-        ;;
-        remove)
+    ;;
+    remove)
         if [ "$2" ]; then
             remove "$2"
         else
             help
         fi
-        ;;
-        run)
+    ;;
+    run)
         if [ "$2" ]; then
             run "$2"
         else
             help
         fi
-        ;;
-        init)
+    ;;
+    init)
         if [ "$3" ]; then
             init "${@:2}"
         else
             help
         fi
-        ;;
-        help)
+    ;;
+    help)
         help
-        ;;
-        "")
-        help
-        ;;
+    ;;
+    *)
+        run "$1"
+    ;;
     esac
             
 }
