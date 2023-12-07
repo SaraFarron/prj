@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd $PROJECTS_FOLDER/$PROJECT || exit
+$GIT
+$EDITOR_COMMAND
