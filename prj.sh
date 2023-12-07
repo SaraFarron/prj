@@ -16,41 +16,12 @@ function help() {
     echo ""
 }
 
-function add() {
-    # add a project
-    cd "$PROJECTS_FOLDER" || exit
-    
-    if [[ $1 == http* ]] ; then
-        
-        # creates project from git link
-        PROJECT="${1##*/}"  # split by / and take last
-        PROJECT=$(echo "$PROJECT"| cut -d'.' -f 1)  # remove .git
-        if [ -f "$SCRIPTS/$PROJECT.sh" ]; then
-            echo "$PROJECT already exists"
-            exit
-        fi
-        echo "Creating project $PROJECT..."
-        git clone "$1"
-        GIT="git fetch $1"
-    else
-        
-        # creates empty project without git
-        PROJECT=$1
-        if [ -f "$SCRIPTS/$PROJECT.sh" ]; then
-            echo "$PROJECT already exists"
-            exit
-        fi
-        GIT=""
-        echo "Creating project $PROJECT..."
-        mkdir "$PROJECT" || echo "Directory $PROJECT already exists"
-    fi
-    
-    cd "$MANAGER_PATH" || exit
-    
+function create-run-script() {
+    # creates run file for a project
     echo "Creating project config..."
     PROJECTPATH="$SCRIPTS/$PROJECT.sh"
     touch "$PROJECTPATH"
-    
+
     # here you can edit default project script
     cat >> "$PROJECTPATH" <<- EOM
 #!/bin/bash
@@ -59,9 +30,50 @@ cd $PROJECTS_FOLDER/$PROJECT || exit
 $GIT
 $EDITOR_COMMAND
 EOM
-    chmod +x "$PROJECTPATH"
+}
+
+function clone-project() {
+    # creates project from git link
+    PROJECT="${1##*/}"  # split by / and take last
+    PROJECT=$(echo "$PROJECT"| cut -d'.' -f 1)  # remove .git
+    if [ -f "$SCRIPTS/$PROJECT.sh" ]; then
+        echo "$PROJECT already exists"
+        exit
+    fi
+    echo "Creating project $PROJECT..."
+    git clone "$1"
+}
+
+function create-project() {
+    # creates empty project without git
+    PROJECT=$1
+    if [ -f "$SCRIPTS/$PROJECT.sh" ]; then
+        echo "$PROJECT already exists"
+        exit
+    fi
+
+    echo "Creating project $PROJECT..."
+    mkdir "$PROJECT" || echo "Directory $PROJECT already exists"
+}
+
+function add() {
+    # add a project
+    cd "$PROJECTS_FOLDER" || exit
     
+    if [[ $1 == http* ]] ; then
+        clone-project "$1"
+        GIT="git fetch $1"
+    else
+        create-project "$1"
+        GIT=""
+    fi
+    
+    cd "$MANAGER_PATH" || exit
+    create-run-script
+    cat "$MANAGER_PATH/configs/prj/run.sh" >> "$PROJECTPATH"
+    chmod +x "$PROJECTPATH"
     echo "Project $PROJECT created"
+
     # opens project after creation
     cd "$PROJECTS_FOLDER/$PROJECT" || exit
     $EDITOR_COMMAND
