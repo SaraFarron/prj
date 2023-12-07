@@ -70,7 +70,6 @@ function add() {
     
     cd "$MANAGER_PATH" || exit
     create-run-script
-    cat "$MANAGER_PATH/configs/prj/run.sh" >> "$PROJECTPATH"
     chmod +x "$PROJECTPATH"
     echo "Project $PROJECT created"
 
@@ -130,14 +129,34 @@ function init() {
 }
 
 
+function save-tag() {
+    "$1 $2" >> "$MANAGER_PATH/tags.txt"
+}
+
+function list-tag() {
+    declare -A tags
+    while IFS= read -r line
+    do
+        tags["${line%% *}"]=${line#* }
+    done < "$TAGS"
+    return "${tags[@]}"
+}
+
+
+function tag() {
+    if [[ "${list}" == *"${1}"* ]]; then
+        echo "${list} contains: ${1}"
+    fi
+    
+    echo "tag functionality"
+}
+
 function main() {
     # main function
     case "$1" in
     add)
         if [ "$2" ]; then
             add "$2"
-        else
-            help
         fi
     ;;
     list)
@@ -146,22 +165,21 @@ function main() {
     remove)
         if [ "$2" ]; then
             remove "$2"
-        else
-            help
         fi
     ;;
     run)
         if [ "$2" ]; then
             run "$2"
-        else
-            help
         fi
     ;;
     init)
         if [ "$3" ]; then
             init "${@:2}"
-        else
-            help
+        fi
+    ;;
+    tag)
+        if [ "$3" ]; then
+            tag "$2" "$3"
         fi
     ;;
     help)
@@ -177,5 +195,6 @@ function main() {
 MANAGER_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 SCRIPTS="$MANAGER_PATH/projects"
 CONFIGS="$MANAGER_PATH/configs"
+TAGS="$MANAGER_PATH/tags.txt"
 
 main "$@"
