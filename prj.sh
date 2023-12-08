@@ -194,7 +194,7 @@ function main() {
 
 MANAGER_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 SCRIPTS="$MANAGER_PATH/projects"
-CONFIGS="$MANAGER_PATH/configs"
+CONFIGS="$MANAGER_PATH/configs/scripts"
 TAGS="$MANAGER_PATH/tags.txt"
 
 main "$@"
