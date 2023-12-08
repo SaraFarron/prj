@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DOCKER_CONFIGS="$MANAGER_PATH/docker"
+source "$PRJ_PATH/const.sh"
+DOCKER_CONFIGS="$CONFIGS/docker"
 COMPOSE_FILE="docker-compose.yml"
 
 function create-docker-compose() {

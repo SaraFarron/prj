@@ -1,7 +1,8 @@
 #!/bin/bash
 
-source "$MANAGER_PATH/docker.sh"
-source "$MANAGER_PATH/nginx.sh"
+source "$PRJ_PATH/const.sh"
+source "$CONFIGS/docker.sh"
+source "$CONFIGS/nginx.sh"
 
 if [ -f 'docker-compose.yml' ]; then
   echo 'docker-compose.yml already exists' ; exit "$ERRCODE"
@@ -21,7 +22,7 @@ create-ssl-certbot-config
 
 INIT_LETSINCRYPT_URL=https://raw.githubusercontent.com/wmnnd/nginx-certbot/master/init-letsencrypt.sh
 
-url -L "$INIT_LETSINCRYPT_URL" > init-letsencrypt.sh
+curl -L "$INIT_LETSINCRYPT_URL" > init-letsencrypt.sh
 chmod +x init-letsencrypt.sh
 
 echo 'Done! Do not forget to replace example.org in nginx.conf'

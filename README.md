@@ -8,8 +8,10 @@ chmod +x ./prj/prj.sh
 ```
 Add alias and source to your `.bashrc`:
 ```shell
-alias prj="path/to/prj/prj.sh"
+PRJ_PATH="path/to/prj"  # Use $HOME instead of '~' here
+alias prj="$PRJ_PATH/prj.sh"
 source path/to/prj/prj-completion.sh
+export PRJ_PATH="$PRJ_PATH"
 ```
 # Usage
 ```shell

@@ -1,7 +1,6 @@
 #!/bin/bash
 
-PROJECTS_FOLDER="$HOME/Projects"  # your projects folder
-EDITOR_COMMAND="code ."  # edit to run in your favourite editor
+source "$PRJ_PATH/const.sh"
 
 function help() {
     echo ""
@@ -68,7 +67,7 @@ function add() {
         GIT=""
     fi
     
-    cd "$MANAGER_PATH" || exit
+    cd "$PRJ_PATH" || exit
     create-run-script
     chmod +x "$PROJECTPATH"
     echo "Project $PROJECT created"
@@ -115,22 +114,33 @@ function run() {
 }
 
 function init() {
+    if [ ! -e "$PROJECTS_FOLDER/$1" ]; then
+        add "$1" || exit
+    fi
+    
     cd "$PROJECTS_FOLDER/$1" || exit
     for config in "${@:2}"
     do
-        if [ ! -f "$CONFIGS/$config.sh" ]; then
+        if [ ! -f "$CONFIG_SCRIPTS/$config.sh" ]; then
             echo "There is no $config config"
             continue
         fi
         echo "Executing $config..."
-        /bin/bash "$CONFIGS/$config.sh"
+        /bin/bash "$CONFIG_SCRIPTS/$config.sh"
     done
     
 }
 
+function init-list() {
+    # list all init configs
+    cd "$CONFIG_SCRIPTS" || exit
+    for f in *.sh; do
+        printf '%s\n' "${f%.sh}"
+    done
+}
 
 function save-tag() {
-    "$1 $2" >> "$MANAGER_PATH/tags.txt"
+    "$1 $2" >> "$PRJ_PATH/tags.txt"
 }
 
 function list-tag() {
@@ -141,7 +151,6 @@ function list-tag() {
     done < "$TAGS"
     return "${tags[@]}"
 }
-
 
 function tag() {
     if [[ "${list}" == *"${1}"* ]]; then
@@ -177,6 +186,9 @@ function main() {
             init "${@:2}"
         fi
     ;;
+    configs)
+        init-list
+    ;;
     tag)
         if [ "$3" ]; then
             tag "$2" "$3"
@@ -191,10 +203,5 @@ function main() {
     esac
             
 }
-
-MANAGER_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-SCRIPTS="$MANAGER_PATH/projects"
-CONFIGS="$MANAGER_PATH/configs/scripts"
-TAGS="$MANAGER_PATH/tags.txt"
 
 main "$@"
