@@ -4,13 +4,18 @@
 # https://habr.com/ru/articles/115886/
 
 _prj_completion() {
-    COMPREPLY=() # пока что мы не знаем, что предложить пользователю, поэтому создадим пустой список.
-    cur="${COMP_WORDS[COMP_CWORD]}" #получаем текущий вводимый аргумент
-    subcommands_1=$(prj list) # массив подкоманд первого уровня - см. синтаксическое дерево в начале поста.
+    COMPREPLY=()                    # list of suggestions
+    cur="${COMP_WORDS[COMP_CWORD]}" # current input word
+    projects=$(prj list)            # list of projects
+    configs=$(prj configs)          # list of init configs
 
-    if [[ ${COMP_CWORD} == 1 ]] ; then # если вводится первый аргумент, то попробуем его дополнить
-        COMPREPLY=( $(compgen -W "${subcommands_1}" -- ${cur}) ) # some magic
-        return 0 # COMPREPLY заполнен, можно выходить
+    if [[ ${COMP_CWORD} == 3 ]] ; then # init completion
+        COMPREPLY=( $(compgen -W "${configs}" -- ${cur}) )
+        return 0 
+    
+    elif [[ ${COMP_CWORD} -lt 3 ]] ; then # 1st argument completion
+        COMPREPLY=( $(compgen -W "${projects}" -- ${cur}) ) # some magic
+        return 0
     fi
 }
 
