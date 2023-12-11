@@ -5,7 +5,7 @@ source "$CONFIGS/docker.sh"
 source "$CONFIGS/nginx.sh"
 
 if [ -f 'docker-compose.yml' ]; then
-  echo 'docker-compose.yml already exists' ; exit "$ERRCODE"
+  echo 'docker-compose.yml already exists' ; exit 1
 fi
 
 echo "Creating docker files"

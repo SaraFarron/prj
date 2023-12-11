@@ -37,7 +37,7 @@ function clone-project() {
     PROJECT=$(echo "$PROJECT"| cut -d'.' -f 1)  # remove .git
     if [ -f "$SCRIPTS/$PROJECT.sh" ]; then
         echo "$PROJECT already exists"
-        exit
+        exit 1
     fi
     echo "Creating project $PROJECT..."
     git clone "$1"
@@ -48,7 +48,7 @@ function create-project() {
     PROJECT=$1
     if [ -f "$SCRIPTS/$PROJECT.sh" ]; then
         echo "$PROJECT already exists"
-        exit
+        exit 1
     fi
 
     echo "Creating project $PROJECT..."
@@ -57,7 +57,7 @@ function create-project() {
 
 function add() {
     # add a project
-    cd "$PROJECTS_FOLDER" || exit
+    cd "$PROJECTS_FOLDER" ||exit 1
     
     if [[ $1 == http* ]] ; then
         clone-project "$1"
@@ -73,13 +73,13 @@ function add() {
     echo "Project $PROJECT created"
 
     # opens project after creation
-    cd "$PROJECTS_FOLDER/$PROJECT" || exit
+    cd "$PROJECTS_FOLDER/$PROJECT" || exit 1
     $EDITOR_COMMAND
 }
 
 function list() {
     # list all projects
-    cd "$SCRIPTS" || exit
+    cd "$SCRIPTS" || exit 1
     for f in *.sh; do
         printf '%s\n' "${f%.sh}"
     done
@@ -90,7 +90,7 @@ function remove() {
     # remove a project
     if [ ! -f "$SCRIPTS/$1.sh" ]; then
         echo "Project does not exist"
-        exit
+        exit 1
     fi
     rm "$SCRIPTS/$1.sh"
     while true; do
@@ -107,18 +107,18 @@ function remove() {
 function run() {
     if [ ! -f "$SCRIPTS/$1.sh" ]; then
         echo "Project does not exist"
-        exit
+        exit 1
     fi
-    cd "$SCRIPTS" || exit
+    cd "$SCRIPTS" || exit 1
     "./$1.sh"
 }
 
 function init() {
     if [ ! -e "$PROJECTS_FOLDER/$1" ]; then
-        add "$1" || exit
+        add "$1" || exit 1
     fi
     
-    cd "$PROJECTS_FOLDER/$1" || exit
+    cd "$PROJECTS_FOLDER/$1" || exit 1
     for config in "${@:2}"
     do
         if [ ! -f "$CONFIG_SCRIPTS/$config.sh" ]; then
@@ -133,7 +133,7 @@ function init() {
 
 function init-list() {
     # list all init configs
-    cd "$CONFIG_SCRIPTS" || exit
+    cd "$CONFIG_SCRIPTS" || 1
     for f in *.sh; do
         printf '%s\n' "${f%.sh}"
     done
