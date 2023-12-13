@@ -2,7 +2,7 @@
 
 source "$PRJ_PATH/const.sh"
 
-function help() {
+function help {
     echo ""
     echo "Usage:"
     echo "  prj add <project name>           Add project."
@@ -15,7 +15,7 @@ function help() {
     echo ""
 }
 
-function create-run-script() {
+function create-run-script {
     # creates run file for a project
     echo "Creating project config..."
     PROJECTPATH="$SCRIPTS/$PROJECT.sh"
@@ -31,7 +31,7 @@ $EDITOR_COMMAND
 EOM
 }
 
-function clone-project() {
+function clone-project {
     # creates project from git link
     PROJECT="${1##*/}"  # split by / and take last
     PROJECT=$(echo "$PROJECT"| cut -d'.' -f 1)  # remove .git
@@ -43,7 +43,7 @@ function clone-project() {
     git clone "$1"
 }
 
-function create-project() {
+function create-project {
     # creates empty project without git
     PROJECT=$1
     if [ -f "$SCRIPTS/$PROJECT.sh" ]; then
@@ -55,7 +55,7 @@ function create-project() {
     mkdir "$PROJECT" || echo "Directory $PROJECT already exists"
 }
 
-function add() {
+function add {
     # add a project
     cd "$PROJECTS_FOLDER" ||exit 1
     
@@ -77,7 +77,7 @@ function add() {
     $EDITOR_COMMAND
 }
 
-function list() {
+function list {
     # list all projects
     cd "$SCRIPTS" || exit 1
     for f in *.sh; do
@@ -86,7 +86,7 @@ function list() {
 
 }
 
-function remove() {
+function remove {
     # remove a project
     if [ ! -f "$SCRIPTS/$1.sh" ]; then
         echo "Project does not exist"
@@ -104,7 +104,7 @@ function remove() {
 
 }
 
-function run() {
+function run {
     if [ ! -f "$SCRIPTS/$1.sh" ]; then
         echo "Project does not exist"
         exit 1
@@ -113,7 +113,7 @@ function run() {
     "./$1.sh"
 }
 
-function init() {
+function init {
     if [ ! -e "$PROJECTS_FOLDER/$1" ]; then
         add "$1" || exit 1
     fi
@@ -131,7 +131,7 @@ function init() {
     
 }
 
-function init-list() {
+function init-list {
     # list all init configs
     cd "$CONFIG_SCRIPTS" || 1
     for f in *.sh; do
@@ -139,11 +139,11 @@ function init-list() {
     done
 }
 
-function save-tag() {
+function save-tag {
     "$1 $2" >> "$PRJ_PATH/tags.txt"
 }
 
-function list-tag() {
+function list-tag {
     declare -A tags
     while IFS= read -r line
     do
@@ -152,7 +152,7 @@ function list-tag() {
     return "${tags[@]}"
 }
 
-function tag() {
+function tag {
     if [[ "${list}" == *"${1}"* ]]; then
         echo "${list} contains: ${1}"
     fi
@@ -160,7 +160,7 @@ function tag() {
     echo "tag functionality"
 }
 
-function main() {
+function main {
     # main function
     case "$1" in
     add)

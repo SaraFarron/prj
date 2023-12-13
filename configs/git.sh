@@ -1,9 +1,9 @@
 #!/bin/bash
 
-function init-repo() {
+function init-repo {
     git init
 }
 
-function create-readme() {
+function create-readme {
     touch README.md
 }
