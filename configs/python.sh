@@ -13,3 +13,10 @@ function init-pipenv {
 function create-main-py {
     touch main.py
 }
+
+function copy-fastapi-template {
+    cp "$PRJ_PATH/configs/python/fastapi.py" "main.py"
+    mkdir -p "app"
+    cp -r "$PRJ_PATH/configs/python/fastapi-app/" "app/"
+    
+}
