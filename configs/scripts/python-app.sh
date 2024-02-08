@@ -7,6 +7,6 @@ PYTHON_CONFIGS="$CONFIGS/python"
 curl-gitignore
 init-pipenv
 create-main-py
-touch const.py
+touch config.py
 touch utils.py
 cat "$PYTHON_CONFIGS/main.py" >> main.py
