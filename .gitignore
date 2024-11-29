@@ -2,3 +2,4 @@ projects/*.sh
 test
 Pipfile
 Pipfile.lock
+old/
