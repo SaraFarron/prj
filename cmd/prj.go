@@ -27,6 +27,16 @@ func Add(projectPath string) {
 }
 
 func Mv(oldPath string, newPath string) {
+    homeDir, err := os.UserHomeDir()
+    if err != nil {
+        panic(err)
+    }
+    oldProjectPath := filepath.Join(homeDir, projectsDir, oldPath)
+    absOldPath, _ := filepath.Abs(oldProjectPath)
+    newProjectPath := filepath.Join(homeDir, projectsDir, newPath)
+    absNewPath, _ := filepath.Abs(newProjectPath)
+    
+    os.Rename(absOldPath, absNewPath)
 }
 
 func Remove(projectPath string) {
