@@ -5,6 +5,7 @@ import (
     "os"
     "os/exec"
     "strings"
+    "net/url"
 )
 
 var projectsDir string = "Projects"
@@ -24,6 +25,18 @@ func Run(projectPath string) {
 }
 
 func Add(projectPath string) {
+    homeDir, _ := os.UserHomeDir()
+    fullProjectsDir := filepath.Join(homeDir, projectsDir)
+    absProjects, _ := filepath.Abs(fullProjectsDir)
+    url, err := url.ParseRequestURI(projectPath)
+    if err != nil {
+        exec.Command("sh", "-c", "cd "+absProjects+" && "+"git", "clone", url.String()).Run()
+    } else {
+        // create folder projectPath
+        fullProjectPath := filepath.Join(fullProjectsDir, projectPath)
+        os.Mkdir(fullProjectPath, 0755)
+    }
+    Run(projectPath)
 }
 
 func Mv(oldPath string, newPath string) {
@@ -40,6 +53,12 @@ func Mv(oldPath string, newPath string) {
 }
 
 func Remove(projectPath string) {
+    homeDir, err := os.UserHomeDir()
+    if err != nil {
+        panic(err)
+    }
+    fullProjectPath := filepath.Join(homeDir, projectsDir, projectPath)
+    os.RemoveAll(fullProjectPath)
 }
 
 func List() (string) {
