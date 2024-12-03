@@ -58,6 +58,7 @@ func Remove(projectPath string) {
         panic(err)
     }
     fullProjectPath := filepath.Join(homeDir, projectsDir, projectPath)
+    // TODO: add confirm
     os.RemoveAll(fullProjectPath)
 }
 
