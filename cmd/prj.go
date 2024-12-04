@@ -1,11 +1,12 @@
 package cmd
 
 import (
-    "path/filepath"
-    "os"
-    "os/exec"
-    "strings"
-    "net/url"
+	"fmt"
+	"net/url"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
 )
 
 var projectsDir string = "Projects"
@@ -36,6 +37,7 @@ func Add(projectPath string) {
         fullProjectPath := filepath.Join(fullProjectsDir, projectPath)
         os.Mkdir(fullProjectPath, 0755)
     }
+    fmt.Printf("Project %s created\n", projectPath)
     Run(projectPath)
 }
 
@@ -50,6 +52,7 @@ func Mv(oldPath string, newPath string) {
     absNewPath, _ := filepath.Abs(newProjectPath)
     
     os.Rename(absOldPath, absNewPath)
+    fmt.Printf("Moved %s --> %s\n", absOldPath, absNewPath)
 }
 
 func Remove(projectPath string) {
@@ -58,8 +61,14 @@ func Remove(projectPath string) {
         panic(err)
     }
     fullProjectPath := filepath.Join(homeDir, projectsDir, projectPath)
-    // TODO: add confirm
+    fmt.Printf("Are you sure you want to delete %s? (y/n): ", fullProjectPath)
+    var input string
+    fmt.Scanln(&input)
+    if input != "y" {
+        return
+    }
     os.RemoveAll(fullProjectPath)
+    fmt.Printf("Deleted %s\n", fullProjectPath)
 }
 
 func List() (string) {
