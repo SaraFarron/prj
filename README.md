@@ -12,3 +12,13 @@ prj list [*folder]
 prj help
 
 ```
+
+## Dev install
+```shell
+go build  # Creates binary prj
+go install  # Adds binary to go list -f '{{.Target}}'
+go list -f '{{.Target}}'
+export PATH=$PATH:/output/of/command/above/minus/last/node  # This can be added to .bashrc
+
+```
+
