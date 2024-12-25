@@ -21,7 +21,8 @@ func Run(projectPath string) {
     if err != nil {
         panic(err)
     }
-    cmd := exec.Command("sh", "-c", "cd "+projectPath+" && code "+absPath)
+    command := "code "+absPath
+    cmd := exec.Command("sh", "-c", command)
     cmd.Run()
 }
 
@@ -30,11 +31,24 @@ func Add(projectPath string) {
     fullProjectsDir := filepath.Join(homeDir, projectsDir)
     absProjects, _ := filepath.Abs(fullProjectsDir)
     url, err := url.ParseRequestURI(projectPath)
-    if err != nil {
-        exec.Command("sh", "-c", "cd "+absProjects+" && "+"git", "clone", url.String()).Run()
+    if err == nil {
+        projectPathSplitted := strings.Split(url.Path, "/")
+        projectPath = projectPathSplitted[len(projectPathSplitted)-1]
+        
+        if _, err := os.Stat(filepath.Join(absProjects, projectPath)); err == nil {
+            fmt.Printf("Project %s already exists\n", projectPath)
+            return
+        }
+        
+        cmd := "cd "+absProjects+" && "+"git clone " + url.String()
+        exec.Command("sh", "-c", cmd).Run()
     } else {
         // create folder projectPath
         fullProjectPath := filepath.Join(fullProjectsDir, projectPath)
+        if _, err := os.Stat(fullProjectPath); err == nil {
+            fmt.Printf("Project %s already exists\n", projectPath)
+            return
+        }
         os.Mkdir(fullProjectPath, 0755)
     }
     fmt.Printf("Project %s created\n", projectPath)
@@ -47,8 +61,16 @@ func Mv(oldPath string, newPath string) {
         panic(err)
     }
     oldProjectPath := filepath.Join(homeDir, projectsDir, oldPath)
+    if _, err := os.Stat(oldProjectPath); err != nil {
+        fmt.Printf("Project %s does not exist\n", oldPath)
+        return
+    }
     absOldPath, _ := filepath.Abs(oldProjectPath)
     newProjectPath := filepath.Join(homeDir, projectsDir, newPath)
+    if _, err := os.Stat(newProjectPath); err == nil {
+        fmt.Printf("Project %s already exists\n", newPath)
+        return
+    }
     absNewPath, _ := filepath.Abs(newProjectPath)
     
     os.Rename(absOldPath, absNewPath)
