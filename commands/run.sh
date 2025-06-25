@@ -13,7 +13,7 @@ input="$1"
 
 # Check if input is git URL
 if [[ "$input" =~ ^(git@|https?://|git://) ]]; then
-    "$(dirname "$0")/commands/add.sh" "$input"
+    "$(dirname "$0")/add.sh" "$input"
     project_name=$(basename "$input" .git)
     input="$project_name"
 fi
@@ -25,7 +25,7 @@ while IFS= read -r project; do
     if [ "$(basename "$project")" = "$project_name" ]; then
         matches+=("$project")
     fi
-done < <("$(dirname "$0")/commands/list.sh")
+done < <("$(dirname "$0")/list.sh")
 
 if [ ${#matches[@]} -eq 0 ]; then
     echo "Error: Project not found: $project_name" >&2

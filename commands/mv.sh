@@ -18,7 +18,7 @@ while IFS= read -r project; do
     if [ "$(basename "$project")" = "$source_project" ]; then
         matches+=("$project")
     fi
-done < <("$(dirname "$0")/commands/list.sh")
+done < <("$(dirname "$0")/list.sh")
 
 if [ ${#matches[@]} -eq 0 ]; then
     echo "Error: Source project not found: $source_project" >&2
@@ -41,7 +41,7 @@ fi
 full_source_path="$PRJ_ROOT/$source_path"
 
 # Check if the destination project already exists
-if "$(dirname "$0")/commands/list.sh" | grep -q "^$dest_project$"; then
+if "$(dirname "$0")/list.sh" | grep -q "^$dest_project$"; then
     echo "Error: Destination project already exists: $dest_project" >&2
     exit 1
 fi
