@@ -46,7 +46,6 @@ case "$1" in
         exec "$(dirname "$0")/commands/help.sh"
         ;;
     *)
-        # Если первый аргумент не команда, то это имя проекта или git-репозиторий
         exec "$(dirname "$0")/commands/run.sh" "$@"
         ;;
 esac
