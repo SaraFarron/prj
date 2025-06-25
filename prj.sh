@@ -1,12 +1,25 @@
 #!/bin/bash
 
-PRJ_ROOT="${PRJ_ROOT:-$HOME/projects}"  # Глобальная переменная для корневой папки проектов
-PRJ_EDITOR="${PRJ_EDITOR:-code}"       # Редактор по умолчанию (VS Code)
 
-# Проверяем, существует ли папка проектов, если нет - создаем
-[ -d "$PRJ_ROOT" ] || mkdir -p "$PRJ_ROOT"
+# First, properly set the root directory path
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Если нет аргументов - показываем справку
+# Then source common.sh with full path verification
+if [ -f "$SCRIPT_DIR/common.sh" ]; then
+    source "$SCRIPT_DIR/common.sh"
+else
+    echo "Error: common.sh not found in $SCRIPT_DIR" >&2
+    exit 1
+fi
+
+# Safely create PRJ_ROOT directory if it doesn't exist
+if [ -n "$PRJ_ROOT" ] && [ ! -d "$PRJ_ROOT" ]; then
+    mkdir -p "$PRJ_ROOT" || {
+        echo "Error: Failed to create project directory: $PRJ_ROOT" >&2
+        exit 1
+    }
+fi
+
 if [ $# -eq 0 ]; then
     exec "$(dirname "$0")/commands/help.sh"
     exit 0

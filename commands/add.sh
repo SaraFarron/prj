@@ -13,16 +13,15 @@ input="$1"
 project_path=""
 git_url=""
 
-# Проверяем, является ли ввод git URL
+# Check if input is git URL
 if [[ "$input" =~ ^(git@|https?://|git://) ]]; then
     git_url="$input"
     project_name=$(basename "$git_url" .git)
     project_path="$PRJ_ROOT/$project_name"
 else
-    # Разбираем путь/имя проекта
     if [[ "$input" == */* ]]; then
         project_path="$PRJ_ROOT/$input"
-        # Проверяем, есть ли git URL в конце
+        # Check if last part is git URL
         last_part=$(basename "$input")
         if [[ "$last_part" =~ ^(git@|https?://|git://) ]]; then
             git_url="$last_part"
@@ -33,16 +32,15 @@ else
     fi
 fi
 
-# Проверяем, существует ли проект
+# Check if project already exists
 if [ -d "$project_path" ]; then
     echo "Error: Project already exists: ${project_path#$PRJ_ROOT/}" >&2
     exit 1
 fi
 
-# Создаем папку проекта
 mkdir -p "$project_path"
 
-# Если есть git URL - клонируем
+# Clone if git URL is provided
 if [ -n "$git_url" ]; then
     echo "Cloning $git_url to $project_path..."
     git clone "$git_url" "$project_path"

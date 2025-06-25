@@ -11,9 +11,8 @@ fi
 
 input="$1"
 
-# Проверяем, является ли ввод git URL
+# Check if input is git URL
 if [[ "$input" =~ ^(git@|https?://|git://) ]]; then
-    # Если это git URL, добавляем проект и открываем
     "$(dirname "$0")/commands/add.sh" "$input"
     project_name=$(basename "$input" .git)
     input="$project_name"

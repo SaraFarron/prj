@@ -40,28 +40,23 @@ fi
 
 full_source_path="$PRJ_ROOT/$source_path"
 
-# Проверяем, существует ли целевой проект
+# Check if the destination project already exists
 if "$(dirname "$0")/commands/list.sh" | grep -q "^$dest_project$"; then
     echo "Error: Destination project already exists: $dest_project" >&2
     exit 1
 fi
 
-# Разбираем целевой путь
 if [[ "$dest_project" == */* ]]; then
     full_dest_path="$PRJ_ROOT/$dest_project"
 else
-    # Если указано только имя, перемещаем в корень PRJ_ROOT
     full_dest_path="$PRJ_ROOT/$dest_project"
 fi
 
-# Создаем целевую директорию
 mkdir -p "$(dirname "$full_dest_path")"
 
-# Перемещаем проект
 echo "Moving project: $source_path -> $dest_project"
 mv "$full_source_path" "$full_dest_path"
 
-# Если исходная директория пустая - удаляем
 source_dir=$(dirname "$full_source_path")
 if [ -d "$source_dir" ] && [ -z "$(ls -A "$source_dir")" ]; then
     rmdir "$source_dir"
