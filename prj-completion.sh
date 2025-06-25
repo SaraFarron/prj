@@ -6,8 +6,8 @@
 _prj_completion() {
     COMPREPLY=()                    # list of suggestions
     cur="${COMP_WORDS[COMP_CWORD]}" # current input word
-    projects=$(prj list)            # list of projects
-    configs=$(prj configs)          # list of init configs
+    projects=$(prj list.sh)            # list of projects
+    configs=$(prj common.sh)          # list of init configs
 
     if [[ ${COMP_CWORD} == 3 ]] ; then # init completion
         COMPREPLY=( $(compgen -W "${configs}" -- ${cur}) )
