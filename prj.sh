@@ -53,6 +53,10 @@ case "$1" in
         shift
         exec "$COMMANDS_DIR/mv.sh" "$@"
         ;;
+    goto)
+        shift
+        exec "$COMMANDS_DIR/goto.sh" "$@"
+        ;;
     help|--help|-h)
         exec "$COMMANDS_DIR/help.sh"
         ;;
