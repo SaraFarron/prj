@@ -8,6 +8,8 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/inst
 ```
 Installs to ~/.local/bin and updates your PATH automatically.
 
+**If you ran it with sudo and `prj` command does not work - try without sudo**
+
 ## Requirements
 `git` and `curl`
 
