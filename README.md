@@ -19,7 +19,7 @@ What this does:
 For a user-local installation:
 
 ```shell
-curl -fsSL https://raw.githubusercontent.com/yourusername/yourrepo/main/install-local.sh
+curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/install-local.sh
 ```
 Installs to ~/.local/bin and updates your PATH automatically.
 
@@ -27,3 +27,12 @@ Installs to ~/.local/bin and updates your PATH automatically.
 `git` and `curl`
 
 tested on ubuntu / pop os
+
+## Uninstallation
+
+To completely remove `prj`:
+
+### System-wide install (used sudo):
+```shell
+sudo curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/uninstall.sh
+```
