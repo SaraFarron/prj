@@ -7,7 +7,7 @@ CLI project management tool
 Run this command in your terminal to install prj globally:
 
 ```shell
-curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/install.sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/install.sh)"
 ```
 
 What this does:
@@ -19,7 +19,7 @@ What this does:
 For a user-local installation:
 
 ```shell
-curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/install-local.sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/install-local.sh)"
 ```
 Installs to ~/.local/bin and updates your PATH automatically.
 
@@ -34,5 +34,5 @@ To completely remove `prj`:
 
 ### System-wide install (used sudo):
 ```shell
-sudo curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/uninstall.sh
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/uninstall.sh)"
 ```
