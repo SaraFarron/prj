@@ -7,7 +7,7 @@ CLI project management tool
 Run this command in your terminal to install prj globally:
 
 ```shell
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/install.sh)"
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/install.sh)"
 ```
 
 What this does:
@@ -33,5 +33,5 @@ tested on ubuntu / pop os
 To completely remove `prj`:
 
 ```shell
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/uninstall.sh)"
+curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/uninstall.sh | bash
 ```
