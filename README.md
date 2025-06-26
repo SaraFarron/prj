@@ -32,7 +32,6 @@ tested on ubuntu / pop os
 
 To completely remove `prj`:
 
-### System-wide install (used sudo):
 ```shell
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/SaraFarron/prj/main/uninstall.sh)"
 ```
