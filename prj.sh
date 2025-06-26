@@ -1,24 +1,23 @@
 #!/bin/bash
 
 
-# First, properly set the root directory path
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the real path of this script (following symlinks)
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+PRJ_INSTALL_DIR="$(dirname "$SCRIPT_PATH")"
 
-# Then source common.sh with full path verification
-if [ -f "$SCRIPT_DIR/common.sh" ]; then
-    source "$SCRIPT_DIR/common.sh"
+# If we're called via symlink, find the real installation dir
+if [ -L "$PRJ_INSTALL_DIR/prj.sh" ]; then
+    PRJ_INSTALL_DIR="$(dirname "$(readlink -f "$PRJ_INSTALL_DIR/prj.sh")")"
+fi
+
+# Load common.sh from the installation directory
+if [ -f "$PRJ_INSTALL_DIR/common.sh" ]; then
+    source "$PRJ_INSTALL_DIR/common.sh"
 else
-    echo "Error: common.sh not found in $SCRIPT_DIR" >&2
+    echo "Error: Could not find common.sh in $PRJ_INSTALL_DIR" >&2
     exit 1
 fi
 
-# Safely create PRJ_ROOT directory if it doesn't exist
-if [ -n "$PRJ_ROOT" ] && [ ! -d "$PRJ_ROOT" ]; then
-    mkdir -p "$PRJ_ROOT" || {
-        echo "Error: Failed to create project directory: $PRJ_ROOT" >&2
-        exit 1
-    }
-fi
 
 if [ $# -eq 0 ]; then
     exec "$(dirname "$0")/commands/help.sh"
