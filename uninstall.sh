@@ -52,6 +52,10 @@ case "$INSTALL_TYPE" in
         ;;
 esac
 
+# For some reason, sometimes above case is not enough
+rm -rf ~/.local/share/prj
+rm -rf ~/.local/bin/prj
+
 # Handle config files (common to both)
 if [ -d "$CONFIG_DIR" ]; then
     echo "Remove configuration files? [y/N]"
