@@ -14,7 +14,7 @@ while IFS= read -r project; do
     if [ "$(basename "$project")" = "$project_name" ]; then
         matches+=("$project")
     fi
-done < <("$PRJ_ROOT_DIR/commands/list.sh")
+done < <("$(dirname "$0")/list.sh")
 
 if [ ${#matches[@]} -eq 0 ]; then
     echo "Error: Project not found: $project_name" >&2
