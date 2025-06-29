@@ -37,11 +37,11 @@ if [ $# -eq 0 ]; then
 fi
 
 case "$1" in
-    list)
+    list|ls)
         shift
         exec "$COMMANDS_DIR/list.sh" "$@"
         ;;
-    add)
+    add|-a)
         shift
         exec "$COMMANDS_DIR/add.sh" "$@"
         ;;
@@ -53,7 +53,7 @@ case "$1" in
         shift
         exec "$COMMANDS_DIR/mv.sh" "$@"
         ;;
-    goto)
+    goto|to)
         shift
         exec "$COMMANDS_DIR/goto.sh" "$@"
         ;;
