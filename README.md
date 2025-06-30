@@ -33,6 +33,12 @@ If you happened to use this and experience some kind of bug or want more feature
 
 You can also do it yourself - prj is just a bunch of bash scripts, even if you are not comfortable with programming in bash - AI will most certainly be of great help.
 
+## Cool features
+* simple to install and uninstall with one command scripts
+* tab completion
+* no in-app purchases and ads
+* rust-free
+
 ## Credits
 
 Mostly inspired by [prm](https://github.com/EivindArvesen/prm), but prj is more simple and trivial.
