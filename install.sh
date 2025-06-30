@@ -34,3 +34,19 @@ fi
 echo "Installation complete!"
 echo "Project files are in: $TARGET_DIR"
 echo "Symlink is in: $BIN_DIR/prj"
+
+# Install tab-completion
+COMPLETION_SCRIPT="$TARGET_DIR/prj-completion.sh"
+
+if ! grep -q "$COMPLETION_SCRIPT" "$HOME/.bashrc"; then
+    echo "Installing bash completion..."
+    echo "source \"$COMPLETION_SCRIPT\"" >> "$HOME/.bashrc"
+fi
+
+if ! grep -q "$COMPLETION_SCRIPT" "$HOME/.zshrc"; then
+    echo "Installing zsh completion..."
+    echo "source \"$COMPLETION_SCRIPT\"" >> "$HOME/.zshrc"
+fi
+
+echo "Tab-completion installed. Restart your shell or run 'source ~/.bashrc' or 'source ~/.zshrc'"
+

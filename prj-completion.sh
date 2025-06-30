@@ -1,20 +1,24 @@
 #!/bin/bash
 
-# https://askubuntu.com/a/345150/1714665
-# https://habr.com/ru/articles/115886/
-
 _prj_completion() {
-    COMPREPLY=()                    # list of suggestions
-    cur="${COMP_WORDS[COMP_CWORD]}" # current input word
-    projects=$(prj list.sh)            # list of projects
-    configs=$(prj common.sh)          # list of init configs
+    local cur prev commands projects
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
 
-    if [[ ${COMP_CWORD} == 3 ]] ; then # init completion
-        COMPREPLY=( $(compgen -W "${configs}" -- ${cur}) )
-        return 0 
-    
-    elif [[ ${COMP_CWORD} -lt 3 ]] ; then # 1st argument completion
-        COMPREPLY=( $(compgen -W "${projects}" -- ${cur}) ) # some magic
+    commands="list ls add -a rm remove delete mv move rename goto to help --help -h"
+
+    # Suggest commands after `prj`
+    if [[ $COMP_CWORD -eq 1 ]]; then
+        COMPREPLY=( $(compgen -W "$commands" -- "$cur") )
+        return 0
+    fi
+
+    # Commands that take a project name as argument
+    if [[ "$prev" =~ ^(rm|remove|delete|goto|to|mv|move|rename|run)$ ]]; then
+        # Use 'prj list' to get available projects
+        projects=$(prj list 2>/dev/null)
+        COMPREPLY=( $(compgen -W "$projects" -- "$cur") )
         return 0
     fi
 }
