@@ -50,5 +50,6 @@ if [ -n "$git_url" ]; then
         exit 1
     fi
 else
+    touch "$project_path/README.md"
     echo "Created empty project at ${project_path#$PRJ_ROOT/}"
 fi
