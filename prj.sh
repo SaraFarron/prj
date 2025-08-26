@@ -53,7 +53,7 @@ case "$1" in
         shift
         exec "$COMMANDS_DIR/mv.sh" "$@"
         ;;
-    goto|to)
+    goto|to|cd)
         shift
         exec "$COMMANDS_DIR/goto.sh" "$@"
         ;;

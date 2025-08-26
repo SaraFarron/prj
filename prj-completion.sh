@@ -6,7 +6,7 @@ _prj_completion() {
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
 
-    commands="list ls add -a rm remove delete mv move rename goto to help --help -h"
+    commands="list ls add -a rm remove delete mv move rename goto to cd help --help -h"
 
     projects=$(prj list 2>/dev/null)
 
