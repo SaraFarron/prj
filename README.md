@@ -39,6 +39,17 @@ You can also do it yourself - prj is just a bunch of bash scripts, even if you a
 * no in-app purchases and ads
 * rust-free
 
+## Per project settings
+Execute `prj init $PROJECT_NAME` to create .prj/config in your project.
+Open config file and edit `PROJECT_EDITOR` variable. By default it will be `code` which calls for vscode.
+If you know, how to open folder in your IDE in terminal, you know what to place in `PROJECT_EDITOR` variable.
+If you don't, here is some examples:
+* `code` - vscode
+* `~/Programs/pycharm-professional-2024.3.5/pycharm-2024.3.5/bin` - PyCharm 2024t
+* `vi` / `vim` - Vi / Vim
+
+Currently only this setting is available, more will come in future, maybe...
+
 ## Credits
 
 Mostly inspired by [prm](https://github.com/EivindArvesen/prm), but prj is more simple and trivial.
