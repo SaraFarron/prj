@@ -45,7 +45,7 @@ Open config file and edit `PROJECT_EDITOR` variable. By default it will be `code
 If you know, how to open folder in your IDE in terminal, you know what to place in `PROJECT_EDITOR` variable.
 If you don't, here is some examples:
 * `code` - vscode
-* `~/Programs/pycharm-professional-2024.3.5/pycharm-2024.3.5/bin` - PyCharm 2024t
+* `/home/$USER/Programs/pycharm-professional-2024.3.5/pycharm-2024.3.5/bin/pycharm` - PyCharm 2024t
 * `vi` / `vim` - Vi / Vim
 
 Currently only this setting is available, more will come in future, maybe...
