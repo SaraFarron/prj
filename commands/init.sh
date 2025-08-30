@@ -43,6 +43,8 @@ config_file="$config_dir/config"
 # Create .prj dir and config file
 mkdir -p "$config_dir"
 echo "PRJ_EDITOR=\"$PRJ_EDITOR\"" > "$config_file"
+touch "$config_dir/.gitignore"
+echo "*" > "$config_dir/.gitignore"
 
 echo "Initialized project: $project_name"
 echo "Config file created at: $config_file"
