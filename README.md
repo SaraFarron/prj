@@ -45,5 +45,4 @@ Mostly inspired by [prm](https://github.com/EivindArvesen/prm), but prj is more 
 
 ## TODO
 
-* command for changing config (like choosing another ide or modifying default open command)
 * custom project opening (like choosing open command for specific project)

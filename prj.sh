@@ -60,6 +60,10 @@ case "$1" in
     help|--help|-h)
         exec "$COMMANDS_DIR/help.sh"
         ;;
+    init)
+        shift
+        exec "$COMMANDS_DIR/init.sh" "$@"
+        ;;
     *)
         exec "$COMMANDS_DIR/run.sh" "$@"
         ;;
