@@ -4,22 +4,14 @@ PRJ_ROOT_DIR="$(dirname "$(dirname "$0")")"
 source "$PRJ_ROOT_DIR/common.sh"
 
 if [ $# -eq 0 ]; then
-    echo "Error: Project name or git URL required" >&2
+    echo "Usage: prj init <project-name>" >&2
     exit 1
 fi
 
-input="$1"
-
-# Check if input is git URL
-if [[ "$input" =~ ^(git@|https?://|git://) ]]; then
-    "$(dirname "$0")/add.sh" "$input"
-    project_name=$(basename "$input" .git)
-    input="$project_name"
-fi
-
-project_name="$input"
+project_name="$1"
 matches=()
 
+# Find matching projects
 while IFS= read -r project; do
     if [ "$(basename "$project")" = "$project_name" ]; then
         matches+=("$project")
@@ -34,7 +26,7 @@ elif [ ${#matches[@]} -gt 1 ]; then
     for i in "${!matches[@]}"; do
         echo "$((i+1)). ${matches[$i]}"
     done
-    read -p "Select project to open (1-${#matches[@]}): " choice
+    read -p "Select project to initialize (1-${#matches[@]}): " choice
     if [[ ! "$choice" =~ ^[0-9]+$ ]] || [ "$choice" -lt 1 ] || [ "$choice" -gt ${#matches[@]} ]; then
         echo "Invalid selection" >&2
         exit 1
@@ -45,17 +37,12 @@ else
 fi
 
 full_path="$PRJ_ROOT/$project_path"
+config_dir="$full_path/.prj"
+config_file="$config_dir/config"
 
-# Check for .prj/config and override PRJ_EDITOR if found
-config_file="$full_path/.prj/config"
-if [ -f "$config_file" ]; then
-    # Source the config file to get PRJ_EDITOR if defined
-    while IFS= read -r line; do
-        if [[ "$line" =~ ^PRJ_EDITOR= ]]; then
-            eval "$line"
-        fi
-    done < "$config_file"
-fi
+# Create .prj dir and config file
+mkdir -p "$config_dir"
+echo "PRJ_EDITOR=\"$PRJ_EDITOR\"" > "$config_file"
 
-echo "Opening project: $project_path"
-"$PRJ_EDITOR" "$full_path"
+echo "Initialized project: $project_name"
+echo "Config file created at: $config_file"
