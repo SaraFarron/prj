@@ -21,7 +21,7 @@ project_name="$input"
 matches=()
 
 while IFS= read -r project; do
-    if [ "$(basename "$project")" = "$project_name" ]; then
+    if [ "$project" = "$project_name" ] || [ "$(basename "$project")" = "$project_name" ]; then
         matches+=("$project")
     fi
 done < <("$(dirname "$0")/list.sh")
